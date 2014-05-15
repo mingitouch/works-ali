@@ -15,8 +15,10 @@ patt = '<a (.*)>(.*)<\/a>'
 
 
 def getContent(url):
+    header = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36' }
     try:
-        content = urllib2.urlopen(url, timeout=10).read()
+        request = urllib2.Request(url, headers = header)
+        content = urllib2.urlopen(request, timeout=10).read()
     except:
         return [url]
     pattern = amazonPattern
@@ -61,7 +63,7 @@ def readKey():
         urls.append(base+key)
         query.append(key)
         results.append(getContent(base+key))
-        tiem.sleep(2)
+        time.sleep(2)
     end = time.time()
     print end-begin
     cnt = 0
