@@ -18,7 +18,7 @@ def getContent(url):
     header = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36' }
     try:
         request = urllib2.Request(url, headers = header)
-        content = urllib2.urlopen(request, timeout=10).read()
+        content = urllib2.urlopen(request, timeout=5).read()
     except:
         return [url]
 
@@ -64,8 +64,13 @@ def readKey():
         key = key.replace(' ','+')
         urls.append(base+key)
         query.append(key)
+        startFlag = time.time()
         results.append(getContent(base+key))
-        time.sleep(2)
+        endFlag = time.time()
+        if endFlag-startFlag<2:
+            time.sleep(2-endFlag+startFlag)
+        else:
+            pass
     end = time.time()
     print end-begin
     cnt = 0
