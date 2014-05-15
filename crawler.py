@@ -14,6 +14,9 @@ amazonPattern = '<span class="fontSize115">\n(.*)<\/span>'
 ebayPattern = 'Did you mean(.*)'
 patt = '<a (.*)>(.*)<\/a>'
 
+inputpath = 'splitData/1'
+outputpath = 'results1'
+delaypath = 'delay1'
 
 def getContent(url):
     header = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36' }
@@ -50,13 +53,13 @@ def crawler(urls, filename):
         print query[i],',',results[i]
 
 def readKey():
-    reader = open('DAT')
+    reader = open(inputpath)
     urls = []
     count = 0
     results = []
     begin = time.time()
     for line in reader:
-        if count == 20:
+        if count == 10:
             break
         print count
         count = count + 1
@@ -84,11 +87,13 @@ def readKey():
     if m != n:
         print 'wrong'
 
+    out = open(outputpath, 'w')
+    outdelay = open(delaypath, 'w')
     for i in range(n):
-        print str(query[i])+','+str(results[i])
+        out.write(str(query[i])+','+str(results[i])+'\n')
     print len(delay)
     for k in delay:
-        print str(k)+','+str(delay[k])
+        outdelay(str(k)+','+str(delay[k])+'\n')
     reader.close()
     print cnt
     return urls
