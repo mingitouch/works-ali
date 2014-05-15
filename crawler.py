@@ -7,7 +7,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 query = []
 amazon = 'http://www.amazon.com/s/ref=nb_sb_noss?field-keywords='
 ebay = 'http://www.ebay.com/sch/i.html?_nkw='
-base = amazon
+base = ebay
 
 amazonPattern = '<span class="fontSize115">\n(.*)<\/span>'
 ebayPattern = 'Did you mean(.*)'
@@ -21,7 +21,9 @@ def getContent(url):
         content = urllib2.urlopen(request, timeout=10).read()
     except:
         return [url]
-    pattern = amazonPattern
+
+    pattern = ebayPattern
+#    pattern = amazonPattern
 #    patt = '<a (.*)>(.*)<\/a>'
     found = re.findall(pattern, content)
     if found:
