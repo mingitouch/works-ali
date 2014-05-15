@@ -3,8 +3,13 @@ import csv
 import re
 import time
 import sys
+import cookielib
 import os
 from multiprocessing.dummy import Pool as ThreadPool
+
+cookie = cookielib.CookieJar()
+opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
+urllib2.install_opener(opener)
 
 query = []
 delay = {}
@@ -26,7 +31,7 @@ def getContent(url):
     header = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36' }
     try:
         request = urllib2.Request(url, headers = header)
-        content = urllib2.urlopen(request, timeout=5).read()
+        content = urllib2.urlopen(request, timeout=1.5).read()
     except:
         return [url]
 
@@ -57,6 +62,8 @@ def crawler(urls, filename):
         print query[i],',',results[i]
 
 def readKey():
+    out = open(outputpath, 'w')
+    outdelay = open(delaypath, 'w')
     reader = open(inputpath)
     urls = []
     count = 0
@@ -75,12 +82,14 @@ def readKey():
         temp = getContent(base+key)
         if type(temp) == list:
             delay[key] = temp[0]
+            outdelay.write(str(key)+','+str(temp)+'\n')
         else:
             query.append(key)
             results.append(temp)
+            out.write(str(key)+','+str(temp)+'\n')
         endFlag = time.time()
-        if endFlag-startFlag<2:
-            time.sleep(2-endFlag+startFlag)
+        if endFlag-startFlag<1.5:
+            time.sleep(1.5-endFlag+startFlag)
         else:
             pass
     end = time.time()
@@ -91,14 +100,14 @@ def readKey():
     if m != n:
         print 'wrong'
 
-    out = open(outputpath, 'w')
-    outdelay = open(delaypath, 'w')
-    for i in range(n):
-        out.write(str(query[i])+','+str(results[i])+'\n')
+#    for i in range(n):
+#        out.write(str(query[i])+','+str(results[i])+'\n')
     print len(delay)
-    for k in delay:
-        outdelay(str(k)+','+str(delay[k])+'\n')
+#    for k in delay:
+#        outdelay.write(str(k)+','+str(delay[k])+'\n')
     reader.close()
+    out.close()
+    outdelay.close()
     print cnt
     return urls
 
