@@ -2,21 +2,25 @@ import urllib2
 import csv
 import re
 import time
+import sys
+import os
 from multiprocessing.dummy import Pool as ThreadPool
 
 query = []
 delay = {}
 amazon = 'http://www.amazon.com/s/ref=nb_sb_noss?field-keywords='
 ebay = 'http://www.ebay.com/sch/i.html?_nkw='
-base = ebay
+base = ''
+
+pattern = ''
 
 amazonPattern = '<span class="fontSize115">\n(.*)<\/span>'
 ebayPattern = 'Did you mean(.*)'
 patt = '<a (.*)>(.*)<\/a>'
 
-inputpath = 'splitData/1'
-outputpath = 'results1'
-delaypath = 'delay1'
+inputpath = ''
+outputpath = ''
+delaypath = ''
 
 def getContent(url):
     header = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36' }
@@ -100,6 +104,16 @@ def readKey():
 
    
 if __name__ == '__main__':
+    if sys.argv[1] == 'ebay':
+        base = ebay
+        pattern = ebayPattern
+    elif sys.argv[1] == 'amazon':
+        base = amazon
+        pattern = amazonPattern
+        
+    inputpath = sys.argv[2]
+    outputpath = sys.argv[3]
+    delaypath = sys.argv[4]
     urls = readKey()
 #    print urls
 #    crawler(urls, '')
