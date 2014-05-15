@@ -5,6 +5,7 @@ import time
 from multiprocessing.dummy import Pool as ThreadPool
 
 query = []
+delay = {}
 amazon = 'http://www.amazon.com/s/ref=nb_sb_noss?field-keywords='
 ebay = 'http://www.ebay.com/sch/i.html?_nkw='
 base = ebay
@@ -49,13 +50,13 @@ def crawler(urls, filename):
         print query[i],',',results[i]
 
 def readKey():
-    reader = open('sort_query_with_pv')
+    reader = open('DAT')
     urls = []
     count = 0
     results = []
     begin = time.time()
     for line in reader:
-        if count == 100:
+        if count == 20:
             break
         print count
         count = count + 1
@@ -63,9 +64,13 @@ def readKey():
         key, value = line.split(',')
         key = key.replace(' ','+')
         urls.append(base+key)
-        query.append(key)
         startFlag = time.time()
-        results.append(getContent(base+key))
+        temp = getContent(base+key)
+        if type(temp) == list:
+            delay[key] = temp[0]
+        else:
+            query.append(key)
+            results.append(temp)
         endFlag = time.time()
         if endFlag-startFlag<2:
             time.sleep(2-endFlag+startFlag)
@@ -74,10 +79,16 @@ def readKey():
     end = time.time()
     print end-begin
     cnt = 0
-    for item in results:
-        if type(item) == list:
-            cnt += 1
-        print item
+    m = len(query)
+    n = len(results)
+    if m != n:
+        print 'wrong'
+
+    for i in range(n):
+        print str(query[i])+','+str(results[i])
+    print len(delay)
+    for k in delay:
+        print str(k)+','+str(delay[k])
     reader.close()
     print cnt
     return urls
