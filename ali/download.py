@@ -13,16 +13,18 @@ def getContent(url):
         return [url]
 
     pattern = '"q" : "(.*)"'
+    scorepattern = '"score" : (.*)'
 #    pattern = amazonPattern
 #    patt = '<a (.*)>(.*)<\/a>'
     found = re.findall(pattern, content)
+    score = re.findall(scorepattern, content)
     if found:
 #        found = re.findall(patt, found[0])
 #        keyword = found[0][-1]
-        return found[0]
+        return found, score
 #        return keyword
     else:
-        return False
+        return False, False
 
 def download(filename):
     file = open(filename)
@@ -39,9 +41,13 @@ def download(filename):
         line = line.split(',')
         key = ' '.join(line[:-1])
         query = urllib.urlencode({'query':key})
-        temp = getContent(base+query)
-        result.append(temp)
-        output.write(str(key)+','+str(temp)+'\n')
+        found, score = getContent(base+query)
+        if found == False:
+            output.write(str(key)+','+str(found)+'\n')
+        else:
+            n = len(found)
+            for i in range(n):
+                output.write(str(key)+','+str(found[i])+','+str(score[i])+'\n')
 
     output.close()
     end = time.time()
