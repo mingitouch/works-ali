@@ -74,31 +74,40 @@ def readKey():
 	    mark = time.time()
             print count,',',mark-begin
         count = count + 1
+#        if count == 10:
+#            break
 	if count < 9722:
 	    continue
+        if count == 9732:
+            break
 #        print line
-	line = line.split(',')
-	value = line[-1]
-	key = ' '.join(line[:-1])
-        key = key.replace(' ','+')
-        urls.append(base+key)
-        startFlag = time.time()
-        temp = getContent(base+key)
-        if type(temp) == list:
-            delay[key] = temp[0]
-            outdelay.write(str(key)+','+str(temp)+'\n')
-        else:
-            query.append(key)
-            results.append(temp)
-            out.write(str(key)+','+str(temp)+'\n')
-        endFlag = time.time()
-        if endFlag-startFlag<1:
-            time.sleep(1-endFlag+startFlag)
-        else:
-            pass
+
+        try:
+            line = line.split(',')
+            value = line[-1]
+            key = ' '.join(line[:-1])
+#        print key, value
+            key = key.replace(' ','+')
+            urls.append(base+key)
+            startFlag = time.time()
+            temp = getContent(base+key)
+            if type(temp) == list:
+                delay[key] = temp[0]
+                outdelay.write(str(key)+','+str(temp)+'\n')
+            else:
+                query.append(key)
+                results.append(temp)
+                out.write(str(key)+','+str(temp)+'\n')
+            endFlag = time.time()
+            if endFlag-startFlag<1:
+                time.sleep(1-endFlag+startFlag)
+            else:
+                pass
+        except:
+            print line
     end = time.time()
     print end-begin
-    cnt = 0
+#        cnt = 0
     m = len(query)
     n = len(results)
     if m != n:
@@ -112,7 +121,7 @@ def readKey():
     reader.close()
     out.close()
     outdelay.close()
-    print cnt
+#    print cnt
     return urls
 
    
