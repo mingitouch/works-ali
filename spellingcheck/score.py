@@ -60,4 +60,41 @@ def download():
                 output.write(','+item)
             output.write('\n')
 
-download()
+def score(benchmark):
+    dictionary = {}
+    reader = None
+    if benchmark == 'amazon':
+        reader = csv.reader(open('amazoncheckNew'))
+    elif benchmark == 'ebay':
+        reader = csv.reader(open('ebaycheckNew'))
+
+    for line in reader:
+        key = line[0]
+        value = line[1]
+        key = key.replace('+',' ')
+        dictionary[key] = value
+
+    reader = csv.reader(open('output'))
+    cnt = len(dictionary)
+    count = 0
+    hitcnt = 0
+    accuracycnt = 0
+    for line in reader:
+        if count % 100 == 0:
+            #print count
+            pass
+        count += 1
+        key = line[0]
+        value = line[1:]
+        if dictionary.has_key(key):
+            if dictionary[key] in value:
+                hitcnt += 1
+            accuracycnt += len(value)
+        
+    print 1.0 * hitcnt / cnt, 1.0 * hitcnt / accuracycnt
+
+
+print 'amazon',
+score('amazon')
+print 'ebay',
+score('ebay')
