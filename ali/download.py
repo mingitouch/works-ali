@@ -28,14 +28,14 @@ def getContent(url):
 
 def download(filename):
     file = open(filename)
-    output = open('ali_spell_check_all','w')
+    output = open('checkNew','w')
     result = []
     count = 0
     begin = time.time()
     for line in file:
         if count % 10000 == 0:
             print count
-        if count == 971534:
+        if count == 99093:
             break
         count += 1
         line = line.split(',')
