@@ -28,7 +28,7 @@ def getContent(url):
 
 def download(filename):
     file = open(filename)
-    output = open('checkNew','w')
+    output = open('jiangAE','w')
     result = []
     count = 0
     begin = time.time()
@@ -56,5 +56,5 @@ def download(filename):
         
         
 if __name__ == '__main__':
-    filename = '../sort_query'
+    filename = '../jiangTOP'
     download(filename)

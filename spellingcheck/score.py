@@ -85,11 +85,12 @@ def score(benchmark):
             pass
         count += 1
         key = line[0]
-        value = line[1:]
+        key = key.replace('+', ' ')
+        value = line[1:3]#line[1:]
         if dictionary.has_key(key):
             if dictionary[key] in value:
                 hitcnt += 1
-            accuracycnt += len(value)
+        accuracycnt += len(value)
         
     print 1.0 * hitcnt / cnt, 1.0 * hitcnt / accuracycnt
 
