@@ -66,7 +66,7 @@ def score(benchmark):
     if benchmark == 'amazon':
         reader = csv.reader(open('amazoncheckNew'))
     elif benchmark == 'ebay':
-        reader = csv.reader(open('ebaycheckNew'))
+        reader = csv.reader(open('../temp'))
 
     for line in reader:
         key = line[0]
@@ -74,7 +74,7 @@ def score(benchmark):
         key = key.replace('+',' ')
         dictionary[key] = value
 
-    reader = csv.reader(open('output'))
+    reader = csv.reader(open('../ali/jiang'))
     cnt = len(dictionary)
     count = 0
     hitcnt = 0
@@ -86,16 +86,16 @@ def score(benchmark):
         count += 1
         key = line[0]
         key = key.replace('+', ' ')
-        value = line[1:3]#line[1:]
+        value = line[1]#line[1:]
         if dictionary.has_key(key):
-            if dictionary[key] in value:
+            if dictionary[key] == value:
                 hitcnt += 1
-        accuracycnt += len(value)
+        accuracycnt += 1
         
     print 1.0 * hitcnt / cnt, 1.0 * hitcnt / accuracycnt
 
 
-print 'amazon',
-score('amazon')
+#print 'amazon',
+#score('amazon')
 print 'ebay',
 score('ebay')
