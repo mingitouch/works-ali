@@ -12,7 +12,8 @@ class getLocalIps():
     global ipList
     def getLocalEthIps(self):
         for dev in ni.interfaces():
-            if dev.startswith('eth0'):
+#            if dev.startswith('eth0'):
+            if dev.startswith('bond0'):
                 ip=ni.ifaddresses(dev)[2][0]['addr']
                 if ip not in ipList:
                     ipList.append(ip)
@@ -52,12 +53,15 @@ class bindIp():
 
 
 if __name__ == '__main__':
-    bindIpObj= bindIp()
-    print bindIpObj.getIp()
-    bindIpObj.randomIp()
-    print bindIpObj.getIp()
+    getip = getLocalIps()
+    getip.getLocalEthIps()
+    print ipList
+#    bindIpObj= bindIp()
+#    print bindIpObj.getIp()
+#    bindIpObj.randomIp()
+#    print bindIpObj.getIp()
     
-    response = urllib2.urlopen('http://www.ip.cn')
-    html = response.read()
-    ip=re.search(r'code.(.*?)..code',html)
-    print ip.group(1)
+#    response = urllib2.urlopen('http://www.ip.cn')
+#    html = response.read()
+#    ip=re.search(r'code.(.*?)..code',html)
+#    print ip.group(1)
