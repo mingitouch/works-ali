@@ -6,6 +6,7 @@ import sys
 import cookielib
 import os
 from multiprocessing.dummy import Pool as ThreadPool
+from change import *
 
 cookie = cookielib.CookieJar()
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
@@ -83,6 +84,7 @@ def readKey():
 #        print line
 
         try:
+            
             line = line.split(',')
             value = line[-1]
             key = ' '.join(line[:-1])
